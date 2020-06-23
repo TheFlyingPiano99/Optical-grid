@@ -5,17 +5,17 @@
 
 #include <string>
 
-namespace myNspace {
-    static const int kep_szelesseg = 1024;
-    static const int kep_magassag = 768;
+namespace my {
+    static const int window_width = 1024;
+    static const int window_height = 768;
 
 
-    struct koordinata {
+    struct int_2d_coord {
         int x;
         int y;
     };
 
-    struct float_3d_koord {
+    struct float_4d_coord {
         float x;
         float y;
         float z;
@@ -23,14 +23,14 @@ namespace myNspace {
     };
 
 
-    struct rgba_szin {
+    struct rgba_colour {
         int r;
         int g;
         int b;
         int a;
     };
 
-    enum utasitas_enum {
+    enum control_event_enum {
         kilep,
         interakcio,
         fel,
@@ -46,7 +46,7 @@ namespace myNspace {
         nincs_utasitas
     };
 
-    struct uzenet {
+    struct event {
         std::string kuldo_ID;
         std::string cimzett_ID;
         std::string tartalom;

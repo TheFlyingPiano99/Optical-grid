@@ -40,24 +40,24 @@ public:
     }
 };
 
-#include "sajat_tipusok.h"
+#include "my_types.h"
 
-float abs_float_3d_koord (myNspace::float_3d_koord k);
+float abs_float_3d_koord (my::float_4d_coord k);
 
-typename myNspace::float_3d_koord norm_float_3d_koord(myNspace::float_3d_koord a);
+typename my::float_4d_coord norm_float_3d_koord(my::float_4d_coord a);
 
-typename myNspace::float_3d_koord operator-(myNspace::float_3d_koord a, myNspace::float_3d_koord b);
+typename my::float_4d_coord operator-(my::float_4d_coord a, my::float_4d_coord b);
 
-typename myNspace::float_3d_koord operator+(myNspace::float_3d_koord a, myNspace::float_3d_koord b);
+typename my::float_4d_coord operator+(my::float_4d_coord a, my::float_4d_coord b);
 
-typename myNspace::float_3d_koord operator*(myNspace::float_3d_koord a, myNspace::float_3d_koord b);
+typename my::float_4d_coord operator*(my::float_4d_coord a, my::float_4d_coord b);
 
-typename myNspace::float_3d_koord operator*(float a, myNspace::float_3d_koord b);
-typename myNspace::float_3d_koord operator*(myNspace::float_3d_koord b, float a);
+typename my::float_4d_coord operator*(float a, my::float_4d_coord b);
+typename my::float_4d_coord operator*(my::float_4d_coord b, float a);
 
-float dot_product(myNspace::float_3d_koord a, myNspace::float_3d_koord b);
-typename myNspace::float_3d_koord cross_product(myNspace::float_3d_koord a, myNspace::float_3d_koord b);
-float sin(myNspace::float_3d_koord v1, myNspace::float_3d_koord v2);
+float dot_product(my::float_4d_coord a, my::float_4d_coord b);
+typename my::float_4d_coord cross_product(my::float_4d_coord a, my::float_4d_coord b);
+float sin(my::float_4d_coord v1, my::float_4d_coord v2);
 
 
 #endif //LEGITARSASAG_FUNCTIONS_H

@@ -4,12 +4,12 @@
 
 #include "functions.h"
 
-float abs_float_3d_koord (myNspace::float_3d_koord k) {
+float abs_float_3d_koord (my::float_4d_coord k) {
     return std::sqrt(k.x*k.x + k.y*k.y + k.z*k.z + k.w*k.w);
 }
 
-typename myNspace::float_3d_koord operator-(myNspace::float_3d_koord a, myNspace::float_3d_koord b) {
-    myNspace::float_3d_koord ret;
+typename my::float_4d_coord operator-(my::float_4d_coord a, my::float_4d_coord b) {
+    my::float_4d_coord ret;
     ret.x = a.x - b.x;
     ret.y = a.y - b.y;
     ret.z = a.z - b.z;
@@ -17,8 +17,8 @@ typename myNspace::float_3d_koord operator-(myNspace::float_3d_koord a, myNspace
     return ret;
 }
 
-typename myNspace::float_3d_koord operator+(myNspace::float_3d_koord a, myNspace::float_3d_koord b) {
-    myNspace::float_3d_koord ret;
+typename my::float_4d_coord operator+(my::float_4d_coord a, my::float_4d_coord b) {
+    my::float_4d_coord ret;
     ret.x = a.x + b.x;
     ret.y = a.y + b.y;
     ret.z = a.z + b.z;
@@ -26,8 +26,8 @@ typename myNspace::float_3d_koord operator+(myNspace::float_3d_koord a, myNspace
     return ret;
 }
 
-typename myNspace::float_3d_koord operator*(myNspace::float_3d_koord a, myNspace::float_3d_koord b) {
-    myNspace::float_3d_koord ret;
+typename my::float_4d_coord operator*(my::float_4d_coord a, my::float_4d_coord b) {
+    my::float_4d_coord ret;
     ret.x = a.x * b.x;
     ret.y = a.y * b.y;
     ret.z = a.z * b.z;
@@ -35,7 +35,7 @@ typename myNspace::float_3d_koord operator*(myNspace::float_3d_koord a, myNspace
     return ret;
 }
 
-typename myNspace::float_3d_koord operator*(float a, myNspace::float_3d_koord b) {
+typename my::float_4d_coord operator*(float a, my::float_4d_coord b) {
     b.x = a * b.x;
     b.y = a * b.y;
     b.z = a * b.z;
@@ -43,7 +43,7 @@ typename myNspace::float_3d_koord operator*(float a, myNspace::float_3d_koord b)
     return b;
 }
 
-typename myNspace::float_3d_koord operator*(myNspace::float_3d_koord b, float a) {
+typename my::float_4d_coord operator*(my::float_4d_coord b, float a) {
     b.x = a * b.x;
     b.y = a * b.y;
     b.z = a * b.z;
@@ -51,7 +51,7 @@ typename myNspace::float_3d_koord operator*(myNspace::float_3d_koord b, float a)
     return b;
 }
 
-typename myNspace::float_3d_koord norm_float_3d_koord(myNspace::float_3d_koord a) {
+typename my::float_4d_coord norm_float_3d_koord(my::float_4d_coord a) {
     float abs = abs_float_3d_koord(a);
     a.x = a.x / abs;
     a.y = a.y / abs;
@@ -60,16 +60,16 @@ typename myNspace::float_3d_koord norm_float_3d_koord(myNspace::float_3d_koord a
     return a;
 }
 
-float dot_product(myNspace::float_3d_koord a, myNspace::float_3d_koord b) {
+float dot_product(my::float_4d_coord a, my::float_4d_coord b) {
     return a.x*b.x + a.y*b.y + a.z*b.z + a.w*b.w;
 }
 
 
-float cos_angle (myNspace::float_3d_koord v1, myNspace::float_3d_koord v2) {
+float cos_angle (my::float_4d_coord v1, my::float_4d_coord v2) {
 
     return dot_product(v1, v2) / (abs_float_3d_koord(v1) * abs_float_3d_koord(v2));
 }
 
-float sin (myNspace::float_3d_koord v1, myNspace::float_3d_koord v2) {
+float sin (my::float_4d_coord v1, my::float_4d_coord v2) {
     return dot_product(v1, v2) / (abs_float_3d_koord(v1) * abs_float_3d_koord(v2));
 }

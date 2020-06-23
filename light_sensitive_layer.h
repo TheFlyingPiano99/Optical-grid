@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include "resource.h"
 
-#include "sajat_tipusok.h"
+#include "my_types.h"
 
 class Light_sensitive_layer {
     Matrix<float> poynting;

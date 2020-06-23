@@ -51,7 +51,7 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
     //Init:
 
 
-    //float ratio = myNspace::kep_szelesseg / myNspace::kep_magassag;
+    //float ratio = my::window_width / my::window_height;
 
     //float resolution = 200;
     //float angle = 1;
@@ -91,32 +91,32 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
 
         grid.diffract(&laser, x, &layer, t_spent);
 
-        layer.plot1D(sdl.getRenderer(), &wr, 0, 0, myNspace::kep_szelesseg, myNspace::kep_magassag- 100);
-        layer.plot2D(sdl.getRenderer(), 80, 0, myNspace::kep_szelesseg, myNspace::kep_magassag, 2);
+        layer.plot1D(sdl.getRenderer(), &wr, 0, 0, my::window_width, my::window_height - 100);
+        layer.plot2D(sdl.getRenderer(), 80, 0, my::window_width, my::window_height, 2);
 
         ///Értékek kiírása:
         std::string str;
         str.append("n = ");
         str.append(std::to_string(n));
         str.append(";");
-        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, myNspace::kep_magassag- 70, myNspace::kep_szelesseg);
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 70, my::window_width);
         str.clear();
         str.append("d = ");
         str.append(std::to_string(d));
         str.append(" m;");
-        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, myNspace::kep_magassag- 50, myNspace::kep_szelesseg);
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 50, my::window_width);
 
         str.clear();
         str.append("source wavelength = ");
         str.append(std::to_string(laser.getWavelength()));
         str.append(" m;");
-        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, myNspace::kep_magassag- 30, myNspace::kep_szelesseg);
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 30, my::window_width);
 
         str.clear();
         str.append("source intensity = ");
         str.append(std::to_string(laser.getIntensity()));
         str.append(" W/m^2;");
-        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 500, myNspace::kep_magassag- 30, myNspace::kep_szelesseg);
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 500, my::window_height - 30, my::window_width);
 
         maintainer.display();
 
@@ -126,25 +126,25 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
         while (wait) {
          */
         sdl.billentyu_olvasas(controlEvents);
-        myNspace::utasitas_enum utas;
+        my::control_event_enum utas;
         while (controlEvents.readEvent(&utas)) {
             //wait = false;
             switch (utas) {
-                case myNspace::utasitas_enum::fel:
+                case my::control_event_enum::fel:
                     n++;
                     break;
-                case myNspace::utasitas_enum::le:
+                case my::control_event_enum::le:
                     if (n > 0) {
                         n--;
                     }
                     break;
-                case myNspace::utasitas_enum::jobbra:
+                case my::control_event_enum::jobbra:
                     d+= 0.00001;
                     break;
-                case myNspace::utasitas_enum::balra:
+                case my::control_event_enum::balra:
                     d-= 0.00001;
                     break;
-                case myNspace::utasitas_enum::kilep:
+                case my::control_event_enum::kilep:
                     fut = false;
                     break;
                 default:

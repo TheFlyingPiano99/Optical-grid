@@ -1,7 +1,7 @@
 #ifndef KEZELES_H_INCLUDED
 #define KEZELES_H_INCLUDED
 
-#include "sajat_tipusok.h"
+#include "my_types.h"
 #include "memtrace.h"
 #include <queue>
 #define MEMTRACE
@@ -9,44 +9,44 @@
 
 
 class ControlEvents {
-    std::queue<myNspace::uzenet> uzenetek;
-    myNspace::utasitas_enum utasitas_l[30];
+    std::queue<my::event> uzenetek;
+    my::control_event_enum utasitas_l[30];
     int i_aktualis;
-    myNspace::koordinata eger_poz;
+    my::int_2d_coord eger_poz;
     int rel_eger_gorgetes;
 
     public:
         ControlEvents() {
             for (int i = 0; i < 30; i++) {
-                utasitas_l[i] = myNspace::nincs_utasitas;
+                utasitas_l[i] = my::nincs_utasitas;
             }
             i_aktualis = 0;
             eger_poz = {0,0};
             rel_eger_gorgetes = 0;
         }
 
-        void setEger_poz(myNspace::koordinata& poz) {
+        void setEger_poz(my::int_2d_coord& poz) {
             eger_poz = poz;
         }
 
-        const myNspace::koordinata& getEger_poz() {
+        const my::int_2d_coord& getEger_poz() {
             return eger_poz;
         }
 
-        void pushEvent(myNspace::utasitas_enum uj) {
+        void pushEvent(my::control_event_enum uj) {
             if (30 == i_aktualis) {
                 return;
             }
             utasitas_l[i_aktualis++] = uj;
         }
 
-        bool readEvent(myNspace::utasitas_enum* ebbe) {
+        bool readEvent(my::control_event_enum* ebbe) {
             *ebbe =  utasitas_l[i_aktualis];
-            utasitas_l[i_aktualis] = myNspace::nincs_utasitas;
+            utasitas_l[i_aktualis] = my::nincs_utasitas;
             if (0 < i_aktualis) {
                 i_aktualis--;
             }
-            return (*ebbe != myNspace::nincs_utasitas);
+            return (*ebbe != my::nincs_utasitas);
         }
 
         bool not_empty() {
@@ -61,17 +61,17 @@ class ControlEvents {
             return rel_eger_gorgetes;
         }
 
-        void pushEvent(myNspace::uzenet uzenet) {
+        void pushEvent(my::event uzenet) {
             uzenetek.push(uzenet);
         }
 
-        myNspace::uzenet readEvent() {
-            myNspace::uzenet visszateres = uzenetek.front();
+        my::event readEvent() {
+            my::event visszateres = uzenetek.front();
             uzenetek.pop();
             return visszateres;
         }
 
-        std::queue<myNspace::uzenet>& getEvents() {
+        std::queue<my::event>& getEvents() {
             return uzenetek;
         }
 

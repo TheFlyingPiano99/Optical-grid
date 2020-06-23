@@ -5,7 +5,7 @@
 #include <map>
 #include <SDL.h>
 
-#include "sajat_tipusok.h"
+#include "my_types.h"
 #include "memtrace.h"
 #include "control.h"
 #include "ido.h"
@@ -41,7 +41,7 @@ public:
         if ( SDL_Init( flags ) != 0 )
             throw InitError();
 
-        if ( SDL_CreateWindowAndRenderer(myNspace::kep_szelesseg, myNspace::kep_magassag, SDL_WINDOW_SHOWN,
+        if ( SDL_CreateWindowAndRenderer(my::window_width, my::window_height, SDL_WINDOW_SHOWN,
                                          &m_window, &m_renderer ) != 0 )
             throw InitError();
     }

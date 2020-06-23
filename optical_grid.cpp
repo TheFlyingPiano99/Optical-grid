@@ -12,12 +12,12 @@ void Optical_grid::diffract (Laser* laser,  float distance_to_layer,  Light_sens
     float m_per_layer_dot = layer->getMeterPerPixel();
 
     ///Egy pont, ahol egy rés található:
-    myNspace::float_3d_koord slit_pos;
+    my::float_4d_coord slit_pos;
     slit_pos.y = 0;
     slit_pos.z = 0;
     slit_pos.w = 0;
     ///Egy pont, ahol felületre érkező fény intezitását mérjük:
-    myNspace::float_3d_koord layer_point_pos;
+    my::float_4d_coord layer_point_pos;
 
     layer_point_pos.z = distance_to_layer;
     layer_point_pos.w = 0;
@@ -34,9 +34,9 @@ void Optical_grid::diffract (Laser* laser,  float distance_to_layer,  Light_sens
             float electric_field = 0;
             for (size_t i = 0; i < n; i++) {
                 slit_pos.x = (float)i * d - x_slit_offset;
-                myNspace::float_3d_koord dirrection = layer_point_pos - slit_pos;
+                my::float_4d_coord dirrection = layer_point_pos - slit_pos;
                 float distance_travelled = abs_float_3d_koord(dirrection);
-                myNspace::float_3d_koord layer_norm = {0, 0, -1, 0};
+                my::float_4d_coord layer_norm = {0, 0, -1, 0};
 
                 electric_field += laser->getElectric_field_amp() * sinf(laser->getWavenumber() * distance_travelled
                          + laser->getAngular_velocity() * t) * sin(layer_norm, dirrection);

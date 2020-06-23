@@ -5,7 +5,7 @@ void SDL::rajzol(/*std::map<std::string, Jatek_entitas*>& jentitasl,*/ Menu_elem
 {
     //H�tt�r kit�rl�se:
     SDL_Rect hatter;
-    hatter.x = 0; hatter.y = 0; hatter.w = myNspace::kep_szelesseg; hatter.h = myNspace::kep_magassag;
+    hatter.x = 0; hatter.y = 0; hatter.w = my::window_width; hatter.h = my::window_height;
     SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255);
     SDL_RenderFillRect(m_renderer, &hatter);
 
@@ -23,26 +23,26 @@ void SDL::billentyu_olvasas(ControlEvents& utasitasok) {
                 case SDL_KEYDOWN:
                     switch( event.key.keysym.sym ) {
                         case SDLK_ESCAPE:
-                            utasitasok.pushEvent(myNspace::kilep);
+                            utasitasok.pushEvent(my::kilep);
                             break;
                         case SDLK_UP:
                         case SDLK_w:
-                            utasitasok.pushEvent(myNspace::fel);
+                            utasitasok.pushEvent(my::fel);
                             break;
                         case SDLK_DOWN:
                         case SDLK_s:
-                            utasitasok.pushEvent(myNspace::le);
+                            utasitasok.pushEvent(my::le);
                             break;
                         case SDLK_LEFT:
                         case SDLK_a:
-                            utasitasok.pushEvent(myNspace::balra);
+                            utasitasok.pushEvent(my::balra);
                             break;
                         case SDLK_RIGHT:
                         case SDLK_d:
-                            utasitasok.pushEvent(myNspace::jobbra);
+                            utasitasok.pushEvent(my::jobbra);
                             break;
                         case SDLK_RETURN:
-                            utasitasok.pushEvent(myNspace::interakcio);
+                            utasitasok.pushEvent(my::interakcio);
                             break;
                     }
                     break;
@@ -73,25 +73,25 @@ void SDL::billentyu_olvasas(ControlEvents& utasitasok) {
                     break;
                 case SDL_MOUSEWHEEL:
                         utasitasok.eger_gorgetes(event.wheel.y);
-                    utasitasok.pushEvent(myNspace::eger_gorgetes);
+                    utasitasok.pushEvent(my::eger_gorgetes);
                     break;
                 case SDL_MOUSEMOTION:
-                    myNspace::koordinata xy;
+                    my::int_2d_coord xy;
                     SDL_GetMouseState(&(xy.x), &(xy.y));
                     utasitasok.setEger_poz(xy);
-                    utasitasok.pushEvent(myNspace::eger_mozgas);
+                    utasitasok.pushEvent(my::eger_mozgas);
                     break;
                 case SDL_MOUSEBUTTONDOWN:
                     switch (event.button.button) {
                         case SDL_BUTTON_LEFT:
-                            utasitasok.pushEvent(myNspace::eger_bal_klikk);
+                            utasitasok.pushEvent(my::eger_bal_klikk);
                             break;
                     }
                     break;
                 case SDL_MOUSEBUTTONUP:
                     switch (event.button.button) {
                         case SDL_BUTTON_LEFT:
-                            utasitasok.pushEvent(myNspace::eger_bal_felenged);
+                            utasitasok.pushEvent(my::eger_bal_felenged);
                             break;
                     }
                     break;
