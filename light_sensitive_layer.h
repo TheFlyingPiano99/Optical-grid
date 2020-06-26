@@ -19,7 +19,6 @@ class Light_sensitive_surface {
     Matrix<std::deque<float>> poynting_history;
     Matrix<float> intensity;
     float m_per_dot;
-    //std::vector<float> frotier;
 
 public:
     /**
@@ -62,8 +61,10 @@ public:
      * @param y1 - bal felső y pozíció az ablakban
      * @param x2 - jobb alsó x pozíció az ablakban
      * @param y2 - jobb alsó y pozíció az ablakban
+     * @param max_disp_intensity - a tengelyen feltüntetett legnagyobb intenzitás
+     * @param resolution - az intenzitás tengely beosztásának sűrűsége
      */
-    void plot1D (SDL_Renderer* renderer, Writer* wr, int x1, int y1, int x2, int y2);
+    void plot1D (SDL_Renderer* renderer, Writer* wr, int x1, int y1, int x2, int y2, float max_disp_intensity, int resolution);
 
 
     size_t getWidth () {

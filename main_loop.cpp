@@ -49,15 +49,15 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
     //Time time = Time();
 
 
-    int n = 2;               ///rések száma a rácson
+    int n = 4;               ///rések száma a rácson
     float wl = 0.0000060;    ///forrás hullámhossz [m]
     float i = 2.0;           ///forrás intenzitása [W/m^2]
     float d = 0.001;         ///távolság a rések között [m]
-    float x = 3;             ///távolság a rács és fényérzékeny felület között [m]
+    float z = 0.5;             ///távolság a rács és fényérzékeny felület között [m]
     float t_spent = 0;       ///idő változó
 
     ///Fényérzékeny réteg inicializálása (300x40 pixel és 0.01 méter / pixel oldal):
-    Light_sensitive_surface light_surface(300, 40, 0.01);
+    Light_sensitive_surface light_surface(300, 40, 0.001);
 
     ///Lézer inicializálása:
     Laser laser(wl, i);
@@ -78,12 +78,13 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
 
         Optical_grid grid(n, d);   ///Optikai rács inicializálása
 
-        ///Diffrakció végrehajtása lézerfényen x távolságban lévő felületre vetítve:
-        grid.diffract(&laser, x, &light_surface, t_spent);
+        ///Diffrakció végrehajtása lézerfényen z távolságban lévő felületre vetítve:
+        grid.diffract(&laser, z, &light_surface, t_spent);
 
         ///Ábrák kirajzolása:
-        light_surface.plot1D(sdl.getRenderer(), &wr, 0, 0, my::window_width, my::window_height - 100);
-        light_surface.plot2D(sdl.getRenderer(), 80, 0, my::window_width, my::window_height, 2);
+        light_surface.plot1D(sdl.getRenderer(), &wr, 0, 0, my::window_width, my::window_height - 100,
+                40, 2);
+        light_surface.plot2D(sdl.getRenderer(), 80, 0, my::window_width, my::window_height, 10);
 
         ///Értékek kiírása:
         std::string str;
@@ -100,7 +101,7 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
 
         str.clear();
         str.append("light_surface distance = ");
-        str.append(std::to_string(x));
+        str.append(std::to_string(z));
         str.append(" m;");
         wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 30, my::window_width);
 

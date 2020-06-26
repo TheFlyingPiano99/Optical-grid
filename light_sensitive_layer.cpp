@@ -4,6 +4,7 @@
 
 #include "light_sensitive_layer.h"
 #include <iostream>
+#include <cmath>
 
 void Light_sensitive_surface::LightInpact (int x, int y, float s) {
     poynting_history[x][y].push_back(s);
@@ -42,7 +43,7 @@ void Light_sensitive_surface::plot2D (SDL_Renderer* renderer, int x1, int y1, in
     }
 }
 
-void Light_sensitive_surface::plot1D (SDL_Renderer* renderer, Writer* wr, int x1, int y1, int x2, int y2) {
+void Light_sensitive_surface::plot1D (SDL_Renderer* renderer, Writer* wr, int x1, int y1, int x2, int y2, float max_disp_intensity, int resolution) {
 
     size_t size_x = intensity.getRowN();
     size_t size_y = intensity.getColumnN();
@@ -54,23 +55,18 @@ void Light_sensitive_surface::plot1D (SDL_Renderer* renderer, Writer* wr, int x1
         y = 0;
     }
 
-    float max_disp_intensity = 200;
-
     float plot_x_increment = (x2 - x1) / (float)size_x;
     float plot_y_increment = (y2 - y1) / max_disp_intensity;
 
-
-
-    //Tengelyek:
+    ///Tengelyek:
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    ///tg(alpha) * l:
-    SDL_RenderDrawLine(renderer, x1, y2, x2, y2);
-    ///Intenzitás:
+
+    ///Intenzitás tengely:
     SDL_RenderDrawLine(renderer, x1, y1, x1, y2);
     ///Intenzitás beosztás:
     int y_plot = y2;
     for (size_t i = 0; max_disp_intensity > i; i++) {
-        if (i % 50 == 0) {
+        if (i % resolution == 0) {
             y_plot = y2 - i * plot_y_increment;
 
             SDL_SetRenderDrawColor(renderer, 80, 80, 80, 255);
@@ -86,44 +82,18 @@ void Light_sensitive_surface::plot1D (SDL_Renderer* renderer, Writer* wr, int x1
     wr->szoveg_kiir(renderer, "W/m^2", x1 + 20, y1 + 20, 200);
     wr->szoveg_kiir(renderer, "m", x2 - 20, y2+5, 50);
 
+    ///pozíció tengely:
+    SDL_RenderDrawLine(renderer, x1, y2, x2, y2);
 
+///--------------------------------------------------------------------------------------------
     int prev_plot_x = x1;
     int prev_plot_y = y2;
 
-    int prev_poy_plot_x = x1;
-    int prev_poy_plot_y = y2;
-
     for (size_t x = 0; x < size_x; x++) {
-/*        float avarage = 0;
-        int i = 0;
-        for (size_t y = 0; y < size_y; y++) {
-            avarage += poynting[x][y];
-            i++;
-        }
-        avarage /= (float)i;
-*/
-        //Poynting:
-        int plot_x = x * plot_x_increment;
-        int plot_y = y2 - (float)(poynting_history[x][y].back() * plot_y_increment);
-        SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
-        SDL_RenderDrawLine(renderer, prev_poy_plot_x, prev_poy_plot_y, plot_x, plot_y);
 
-        prev_poy_plot_x = plot_x;
-        prev_poy_plot_y = plot_y;
+        int plot_x = x1 + x * plot_x_increment;
+        int plot_y = y2 - (float)(intensity[x][y] * plot_y_increment);
 
-        plot_y = y2 - (float)(intensity[x][y] * plot_y_increment);
-
-        ///Frotier:
-        /*if (frotier[x] < poynting[x][y]) {
-            frotier[x] = poynting[x][y];
-        }
-        else if (frotier[x] > poynting[x][y]) {
-            frotier[x] *= 0.99;
-        }
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderDrawLine(renderer, prev_plot_x, y2 - ((0 < x)? frotier[x-1] : frotier[x]) * plot_y_increment, plot_x, y2 - frotier[x]* plot_y_increment);
-        */
-        ///------------
 
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderDrawLine(renderer, prev_plot_x, prev_plot_y, plot_x, plot_y);
@@ -131,18 +101,18 @@ void Light_sensitive_surface::plot1D (SDL_Renderer* renderer, Writer* wr, int x1
         prev_plot_y = plot_y;
 
 
-
-
-        //Tengely beosztas:
+        ///x tengely beosztas:
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        int scale_x = int(x) - (int)(size_x / 2);
-        if (scale_x % 10 == 0) {
+        int offset_x = (x - (size_x/2));
+        if (offset_x % 10 == 0) {
             SDL_RenderDrawLine(renderer, plot_x, y2, plot_x, y2+5);
-            if (scale_x % 25 == 0) {
+            if (offset_x % 25 == 0) {
+                float scaled_x = (float)offset_x * m_per_dot;
                 SDL_RenderDrawLine(renderer, plot_x, y2, plot_x, y2+10);
-                wr->szoveg_kiir(renderer, std::to_string(scale_x * m_per_dot).c_str(), plot_x, y2+10, 100);
+                wr->szoveg_kiir(renderer, std::to_string(scaled_x).c_str(), plot_x, y2 + 10, 100);
             }
         }
+
     }
 
 }
