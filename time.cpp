@@ -1,6 +1,6 @@
-#include "ido.h"
+#include "time.h"
 
-void Ido::fps_kiir(SDL_Renderer* renderer) {
+void Time::write_fps(SDL_Renderer* renderer) {
     static unsigned int rajzolas_szam;
     rajzolas_szam += 1;
     static unsigned int elozo_frissites;
@@ -14,7 +14,7 @@ void Ido::fps_kiir(SDL_Renderer* renderer) {
     }
 }
 
-void Ido::ido_szamitas () {
+void Time::calculate () {
     elozo_t = jelenlegi_t;
     jelenlegi_t = SDL_GetTicks();
     delta_t = jelenlegi_t - elozo_t;

@@ -8,7 +8,7 @@
 #include "my_types.h"
 #include "memtrace.h"
 #include "control.h"
-#include "ido.h"
+#include "time.h"
 
 #define MEMTRACE
 
@@ -52,7 +52,7 @@ public:
         SDL_Quit();
     }
 
-    virtual void rajzol(/*std::map<std::string, Jatek_entitas*>& jobjektuml,*/ Menu_elem& menu, Writer& forras, Ido& jido);
+    virtual void rajzol(/*std::map<std::string, Jatek_entitas*>& jobjektuml,*/ Menu_elem& menu, Writer& forras, Time& jido);
     void billentyu_olvasas(ControlEvents& utasitasok);
 
     bool texturaOlvasas(std::vector <SDL_Texture*>* texturak, const char* ut, int atlatszo_szin = -1) {

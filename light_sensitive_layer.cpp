@@ -5,8 +5,7 @@
 #include "light_sensitive_layer.h"
 #include <iostream>
 
-void Light_sensitive_layer::LightInpact (int x, int y, float s) {
-    poynting[x][y] = s;
+void Light_sensitive_surface::LightInpact (int x, int y, float s) {
     poynting_history[x][y].push_back(s);
     if (50 < poynting_history[x][y].size()) {
         poynting_history[x][y].pop_front();
@@ -20,7 +19,7 @@ void Light_sensitive_layer::LightInpact (int x, int y, float s) {
     intensity[x][y] = average / (float)i;
 }
 
-void Light_sensitive_layer::plot2D (SDL_Renderer* renderer, int x1, int y1, int x2, int y2, float dimming) {
+void Light_sensitive_surface::plot2D (SDL_Renderer* renderer, int x1, int y1, int x2, int y2, float brightness) {
 
     size_t x_size = intensity.getRowN();
     size_t y_size = intensity.getColumnN();
@@ -32,7 +31,7 @@ void Light_sensitive_layer::plot2D (SDL_Renderer* renderer, int x1, int y1, int 
 
     for (size_t x = 0; x < x_size; x++) {
         for (size_t y = 0; y < y_size; y++) {
-            int color = ((intensity[x][y] * dimming) < 255) ? (intensity[x][y] * dimming) : 255;
+            int color = ((intensity[x][y] * brightness) < 255) ? (intensity[x][y] * brightness) : 255;
             SDL_SetRenderDrawColor(renderer, color * 0.5, color, color * 0.25, 255);
 
             pixel.x = x1 + x * pixel.w;
@@ -43,7 +42,7 @@ void Light_sensitive_layer::plot2D (SDL_Renderer* renderer, int x1, int y1, int 
     }
 }
 
-void Light_sensitive_layer::plot1D (SDL_Renderer* renderer, Writer* wr, int x1, int y1, int x2, int y2) {
+void Light_sensitive_surface::plot1D (SDL_Renderer* renderer, Writer* wr, int x1, int y1, int x2, int y2) {
 
     size_t size_x = intensity.getRowN();
     size_t size_y = intensity.getColumnN();
@@ -105,7 +104,7 @@ void Light_sensitive_layer::plot1D (SDL_Renderer* renderer, Writer* wr, int x1, 
 */
         //Poynting:
         int plot_x = x * plot_x_increment;
-        int plot_y = y2 - (float)(poynting[x][y] * plot_y_increment);
+        int plot_y = y2 - (float)(poynting_history[x][y].back() * plot_y_increment);
         SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
         SDL_RenderDrawLine(renderer, prev_poy_plot_x, prev_poy_plot_y, plot_x, plot_y);
 

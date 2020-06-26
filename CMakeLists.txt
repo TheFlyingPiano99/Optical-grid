@@ -27,7 +27,7 @@ include_directories(${SDL2_INCLUDE_DIR} ${CMAKE_BINARY_DIR})
 
 # Define executable target
 add_executable(Optical_grid
-        ido.cpp
+        time.cpp
         main.cpp
         sajat_sdl.cpp
         resource.cpp

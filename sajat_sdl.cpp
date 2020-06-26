@@ -1,7 +1,7 @@
 #include "sajat_sdl.h"
 
 
-void SDL::rajzol(/*std::map<std::string, Jatek_entitas*>& jentitasl,*/ Menu_elem& menu, Writer& forras, Ido& jido)
+void SDL::rajzol(/*std::map<std::string, Jatek_entitas*>& jentitasl,*/ Menu_elem& menu, Writer& forras, Time& jido)
 {
     //H�tt�r kit�rl�se:
     SDL_Rect hatter;

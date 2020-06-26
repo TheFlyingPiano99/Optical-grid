@@ -10,17 +10,28 @@
 #include "functions.h"
 
 /**
- * @param int n - rések száma
- * @param float d - két rés távolsága
+ *Optikai rács
  */
 class Optical_grid {
     size_t n;
     float d;
 
 public:
+    /**
+     * konstruktor
+     * @param n - rések száma
+     * @param d - rések közötti távolság [m]
+     */
     Optical_grid(size_t n , float d): n(n), d(d) {}
 
-    void diffract (Laser* laser, float distance_to_layer, Light_sensitive_layer* layer, float t);
+    /**
+     * Diffrakció végrehajtása lézerfényen x távolságban lévő felületre vetítve:
+     * @param laser - fényforrás címe
+     * @param distance_to_surface - távolság a rács és a fényérzékeny felület között [m]
+     * @param surface - fényérzékeny felület címe
+     * @param t - idő változó
+     */
+    void diffract (Laser* laser, float distance_to_surface, Light_sensitive_surface* surface, float t);
 
 };
 

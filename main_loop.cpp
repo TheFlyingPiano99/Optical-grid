@@ -9,7 +9,7 @@
 #include "light_source.h"
 #include "optical_grid.h"
 #include "light_sensitive_layer.h"
-#include "ido.h"
+#include "time.h"
 
 InitError::InitError() :
         exception(),
@@ -38,97 +38,90 @@ const char * InitError::what() const throw()
 
 
 
-/**A fő ciklus.
-
+/**A fő ciklus függvénye.
 */
 void Main::main_loop (SDL& sdl, Writer& wr) {
-    ControlEvents controlEvents;
-
-    Maintainer maintainer(&sdl);
-
-    Ido time = Ido();
-
     //Init:
+    ControlEvents controlEvents;    ///Billentyűzet lenyomásokat tároló objektum.
+
+    Maintainer maintainer(&sdl);    ///A képrenyő frissítéséért felelős objektum.
+
+    //Time time = Time();
 
 
-    //float ratio = my::window_width / my::window_height;
+    int n = 2;               ///rések száma a rácson
+    float wl = 0.0000060;    ///forrás hullámhossz [m]
+    float i = 2.0;           ///forrás intenzitása [W/m^2]
+    float d = 0.001;         ///távolság a rések között [m]
+    float x = 3;             ///távolság a rács és fényérzékeny felület között [m]
+    float t_spent = 0;       ///idő változó
 
-    //float resolution = 200;
-    //float angle = 1;
+    ///Fényérzékeny réteg inicializálása (300x40 pixel és 0.01 méter / pixel oldal):
+    Light_sensitive_surface light_surface(300, 40, 0.01);
 
-    //size_t depth = 70;
-    //float depth_resolution = 60;
-    //float delta_depth = depth / depth_resolution;
+    ///Lézer inicializálása:
+    Laser laser(wl, i);
 
-    //float angle_offset = (3.14-angle) / 2;
-    //float delta_rad = angle / resolution;
-
-    //size_t pixel_per_x = resolution;
-    //size_t pixel_per_y = resolution;
-
-    Light_sensitive_layer layer(300, 40, 0.01);
-
-    int n = 10;
-    float wl = 0.0000060;
-    float d = 0.001;
-    float x = 1;
-    float t_spent = 0;
-
+    ///tényleges ciklus:
     bool fut = true;
     while (fut) {
-
-        time.ido_szamitas();
-        t_spent =  t_spent + (float)0.00000001;
-        if (6.2831853 < t_spent) {
-            t_spent = 0;
-            std::cout << "Reset t." << std::endl;
-        }
-
-
-        Laser laser(wl, 2);
-        Optical_grid grid(n, d);
         maintainer.clearScreen();
 
-        grid.diffract(&laser, x, &layer, t_spent);
+        //time.calculate();
+        t_spent =  t_spent + (float)0.00000001;
 
-        layer.plot1D(sdl.getRenderer(), &wr, 0, 0, my::window_width, my::window_height - 100);
-        layer.plot2D(sdl.getRenderer(), 80, 0, my::window_width, my::window_height, 2);
+        ///Fölöslegesen nagy eltelt idő helyett nullázom:
+        if (6.2831853 < t_spent) {
+            t_spent = 0;
+            //std::cout << "Reset t." << std::endl;
+        }
+
+        Optical_grid grid(n, d);   ///Optikai rács inicializálása
+
+        ///Diffrakció végrehajtása lézerfényen x távolságban lévő felületre vetítve:
+        grid.diffract(&laser, x, &light_surface, t_spent);
+
+        ///Ábrák kirajzolása:
+        light_surface.plot1D(sdl.getRenderer(), &wr, 0, 0, my::window_width, my::window_height - 100);
+        light_surface.plot2D(sdl.getRenderer(), 80, 0, my::window_width, my::window_height, 2);
 
         ///Értékek kiírása:
         std::string str;
-        str.append("n = ");
+        str.append("slit number = ");
         str.append(std::to_string(n));
         str.append(";");
         wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 70, my::window_width);
+
         str.clear();
-        str.append("d = ");
+        str.append("slit distance = ");
         str.append(std::to_string(d));
         str.append(" m;");
         wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 50, my::window_width);
 
         str.clear();
+        str.append("light_surface distance = ");
+        str.append(std::to_string(x));
+        str.append(" m;");
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 30, my::window_width);
+
+        str.clear();
         str.append("source wavelength = ");
         str.append(std::to_string(laser.getWavelength()));
         str.append(" m;");
-        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 10, my::window_height - 30, my::window_width);
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 500, my::window_height - 70, my::window_width);
 
         str.clear();
         str.append("source intensity = ");
         str.append(std::to_string(laser.getIntensity()));
         str.append(" W/m^2;");
-        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 500, my::window_height - 30, my::window_width);
+        wr.szoveg_kiir(sdl.getRenderer(), str.c_str(), 500, my::window_height - 50, my::window_width);
 
         maintainer.display();
 
-        /*
-        ///Várakozás billentyűzet-bemenetre:
-        bool wait = true;
-        while (wait) {
-         */
+        ///Billentyűzet bemenet kezelése:
         sdl.billentyu_olvasas(controlEvents);
         my::control_event_enum utas;
         while (controlEvents.readEvent(&utas)) {
-            //wait = false;
             switch (utas) {
                 case my::control_event_enum::fel:
                     n++;
@@ -151,7 +144,6 @@ void Main::main_loop (SDL& sdl, Writer& wr) {
                     break;
             }
         }
-        //}
     }
 
 }
@@ -164,6 +156,7 @@ Fő függvény.
 
 Itt inicializálódik az SDL ablak.
 Elő inicializálás.
+Ebből hívódik a fő ciklus.
 */
 int Main::main_func( int argc, char * argv[] ) {
     ///SDL Inicializacio:
@@ -183,9 +176,10 @@ int Main::main_func( int argc, char * argv[] ) {
         return 1;
     }
 
-    Writer wr = Writer();
+    Writer wr = Writer();       ///szöveg kiírásért felelős objektum
     wr.beolvas_bmp_font(sdl);
 
+    ///Fő ciklus:
     main_loop (*sdl, wr);
 
     ///Felszabadítás:

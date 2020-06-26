@@ -9,6 +9,9 @@
 #include <cmath>
 #include <iostream>
 
+/**
+ * Lézer fényforrás
+ */
 class Laser {
     float wavelength;
     float intensity;
@@ -18,10 +21,14 @@ class Laser {
 
 
 public:
+    /**
+     * konstruktor
+     * @param wl - hullámhossz [m]
+     * @param i - intenzitás [W/m^2]
+     */
     Laser(float wl, float i):wavelength(wl), intensity(i) {
         electric_field_amp = sqrtf(intensity) * 27.45248394;
         wavenumber = (float)6.283185307 / wavelength;
-        //std::cout << "Max Electric field: " << electric_field_amp << std::endl;
         angular_velocity = wavenumber * (float)299792458;
     }
 
@@ -40,6 +47,7 @@ public:
     float getWavenumber () {
         return wavenumber;
     }
+
     float getAngular_velocity() {
         return angular_velocity;
     }
